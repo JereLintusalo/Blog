@@ -3,6 +3,8 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                cd /var/lib/jenkins/projects/Blog
+                sh 'git pull'
                 sh 'npm start'
             }
         }

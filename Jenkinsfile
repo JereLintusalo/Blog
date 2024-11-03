@@ -2,7 +2,9 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
-            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: '/var/lib/jenkins/projects/Blog/.git']])
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: '/var/lib/jenkins/projects/Blog/.git']])
+            }
         }
         stage('Build') {
             steps {

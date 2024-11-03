@@ -1,9 +1,8 @@
 pipeline {
-    agent { docker { image 'node:22.11.0-alpine3.20' } }
+    agent any
     stages {
         stage('Build') {
             steps {
-                sh 'chown -R jenkins:jenkins * '
                 sh 'npm install'
             }
         }

@@ -8,12 +8,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build . -t Blog'
+                sh 'docker build --pull --rm -f "Dockerfile" -t blog:latest "."'
             }
         }
         stage('Run') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name Blog Blog'
+                sh 'docker run -d -p 3000:3000 --name blog blog'
             }
         }
     }

@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: '/var/lib/jenkins/projects/Blog/.git']])
+                sh 'git pull'
             }
         }
         stage('Build') {

@@ -1,11 +1,17 @@
 pipeline {
-    agent { dockerfile true }
+    agent any
     stages {
-        stage('Test') {
+        stage('Checkout') {
+            Checkout scm
+        }
+        stage('Build') {
             steps {
-                sh 'node -v'
-                sh 'npm -v'
-                input message: 'Hit Return to exit'
+                sh 'docker build . -t Blog'
+            }
+        }
+        stage('Run') {
+            steps {
+                sh 'docker run -d -p 3000:3000 --name Blog Blog'
             }
         }
     }

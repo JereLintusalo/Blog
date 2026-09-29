@@ -3,7 +3,7 @@ const {
     logAuthEvent, 
     registerUser,
     createSessionId,
-} = require("../authUtils");
+} = require("../routes/authUtils");
 
 const {
     createUser,

@@ -2,9 +2,73 @@ const {
     validateCredentials,
     logAuthEvent, 
     registerUser,
+    createSessionId,
 } = require("../authUtils");
 
-const { createUser, isAdmin } = require("../roles");
+const {
+    createUser,
+    isAdmin
+} = require( '../routes/roles');
+
+// G1 (S)
+describe("G1: Two sesion IDS for the same user are different.", () => {
+    test("createSessionId returns a different value each time", () => {
+        const id1 = createSessionId();
+        const id2 = createSessionId();
+        expect(id1).not.toBe(id2);
+    });
+});
+
+// G2: sessionID is not a hash of the username (S)
+describe("G2: Session ID format.", () => {
+    test("is 64 hex charachters long.", () => {
+
+        const id = createSessionId();
+        expect(id).toMatch(/^[0-9a-f]{64}$/);
+    });
+});
+
+// G3: Empty username is rejected (T)
+describe("G3: Empty username.", () =>{
+    test("Emty string returns false", () =>{
+        const username = "";
+        const password = "Secret123";
+
+        const result = validateCredentials(username, password);
+        expect(result).toBe(false);
+    });
+});
+
+test("Spaces only as string returns fals.", () =>{
+    const result = validateCredentials("   ", "Secret123");
+    expect(result).toBe(false);
+});
+
+//G4: missing or null password is rejected.
+describe("G4: missing or null password", () => {
+    test("null password returns false.", ()=> {
+        const result = validateCredentials("mahdi", "123456");
+        expect(result).toBe(false);
+    });
+
+    test("8 characters return true", () => {
+        const result = validateCredentials("mahdi", "12345678");
+        expect(result).toBe(true);
+    });
+});
+
+// G5: Password length boundry
+describe("G5: Password length boundry.", ()=> {
+    test("7 characters returns false", () =>{
+        const result = validateCredentials("mahdi", "1234567");
+        expect(result).toBe(false);
+    });
+
+    test("8 charaters return true", () => {
+        const result = validateCredentials("mahdi", "12345678");
+        expect(result).toBe(true);
+    });
+});
 
 //G6 Test (T)
 describe("G6: Wrong data types", () => {

@@ -1,6 +1,6 @@
 FROM node:20-alpine as test
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json", "npm-shrinkwrap.json", "./"]
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN apk add python3 py3-pip build-base
 RUN npm install
 COPY . . 

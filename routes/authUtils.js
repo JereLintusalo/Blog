@@ -1,6 +1,9 @@
 const crypto = require("crypto");
-const { createUser } = require(".routes./roles");
+const bcrypt = require('bcryptjs');
+const { createUser } = require("../routes/roles");
+
 const MIN_PASSWORD_LENGTH = 8;
+const SENSITIVE_KEYS = ['password', 'sessionId'];
 
 //G1 and G2
 function createSessionId() {

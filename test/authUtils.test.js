@@ -97,7 +97,7 @@ describe("G7: failed login is logged", () => {
         expect(fakeLogger).toHaveBeenCalledTimes(1);
         const logged = fakeLogger.mock.calls[0][0];
         expect(logged).toContain("login_failed");
-        expect(logged).toContain("john");
+        expect(logged).toContain("jere");
     });
 });
 

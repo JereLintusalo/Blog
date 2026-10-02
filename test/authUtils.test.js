@@ -145,7 +145,7 @@ describe("G10a extra role field at registration", () => {
 });
 
 // G10b-d Test (E)
-describe("G11b-d: isAdmin", () => {
+describe("G10b-d: isAdmin", () => {
     test("G11b: a normal user is not an admin", () => {
         expect(isAdmin({ username: "jere", role: "user" })).toBe(false);
     });

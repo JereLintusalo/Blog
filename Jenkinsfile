@@ -36,18 +36,21 @@ pipeline {
 
         stage('Run') {
             steps {
-                sh 'docker stop blog  true'
-                sh 'docker rm blog true'
-                sh 'docker run -d -p 3000:3000 --name blog blog'
+                sh 'docker stop blog || true'
+                sh 'docker rm blog || true'
+                sh 'docker run -d -p 3000:3000 --name blog blog:latest'
                 sh '''
-                    for i in ${seq 1 15}; do
+                    for i in $(seq 1 15); do
                         if curl -sf http://127.0.0.1:3000/ > /dev/null; then
                             echo "App is up and running."
-                            break
+                            exit 0
                         fi
                         echo "Waiting for the app to start..."
                         sleep 1
                     done
+                    echo "App did not start in time."
+                    docker logs blog
+                    exit 1
                 '''
             }
         }

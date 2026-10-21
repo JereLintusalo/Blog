@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build --pull --rm -f Dockerfile -t blog:latest "."'
+                sh 'docker build --pull --rm -f Dockerfile -t blog:latest .'
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline {
                     rm -f "$WORKSPACE/trivy-report.txt"
 
                     trivy image \
-                    trivy timeout 15m \
+                    --timeout 15m \
                     --format table \
                     --output "$WORKSPACE/trivy-report.txt" \
                     blog:latest
@@ -41,7 +41,7 @@ pipeline {
                 sh 'docker rm blog || true'
                 sh 'docker run -d -p 3000:3000 --name blog blog:latest'
                 sh '''
-                    for i in ${seq 1 15}; do
+                    for i in $(seq 1 15); do
                         if curl -sf http://127.0.0.1:3000 > /dev/null; then
                             echo "App is uo and running."
                             break

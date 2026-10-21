@@ -6,7 +6,6 @@ pipeline {
                 sh 'docker build --pull --rm -f Dockerfile -t blog:latest .'
                 }
             }
-        }
 
         stage('Trivy Scan') {
             steps {

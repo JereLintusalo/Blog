@@ -13,7 +13,7 @@ pipeline {
                     rm -f "$WORKSPACE/trivy-report.txt"
 
                     trivy image \
-                    trivy timeout 15m \
+                    --timeout 15m \
                     --format table \
                     --output "$WORKSPACE/trivy-report.txt" \
                     blog:latest

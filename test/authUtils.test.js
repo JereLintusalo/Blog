@@ -145,8 +145,8 @@ describe("G9: registration without password", () => {
         expect(result.ok).toBe(true);
         expect(result.user.username).toBe("jere");
         expect(result.user.role).toBe("user");
-        expect(result.user.passwordhash).not.toBe("Secret123");
-        expect(result.user.passwordhash).toMatch(/^$2[aby]$/);
+        expect(result.user.passwordHash).not.toBe("Secret123");
+        expect(result.user.passwordHash).toMatch(/^\$2[aby]\$/);
     })
 });
 

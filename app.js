@@ -2,14 +2,15 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const crypto = require('crypto');
 const app = express();
 const port = process.env.PORT || 3000;
 
 const authRoutes = require('./routes/auth');
 const db = require('./database');
 
-const { logAuthEVent } = require('./authUtils');
-const { isAdmin } = require('./roles');
+const { logAuthEVent } = require('./routes/authUtils');
+const { isAdmin } = require('./routes/roles');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

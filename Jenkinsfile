@@ -1,12 +1,12 @@
 pipeline {
-
     agent any
-
     stages {
-
         stage('Build') {
             steps {
-                sh 'docker build --pull --rm -f "Dockerfile" -t blog:latest "."'
+                sh 'find . -maxdepth 3 -name Dockerfile'
+                dir('Blog') {
+                    sh 'docker build --pull --rm -f Dockerfile -t blog:latest "."'
+                }
             }
         }
 
@@ -16,9 +16,10 @@ pipeline {
                     rm -f "$WORKSPACE/trivy-report.txt"
 
                     trivy image \
-                        --format table \
-                        --output "$WORKSPACE/trivy-report.txt" \
-                        blog:latest
+                    trivy timeout 15m \
+                    --format table \
+                    --output "$WORKSPACE/trivy-report.txt" \
+                    blog:latest
                 '''
             }
         }
@@ -29,6 +30,10 @@ pipeline {
                     odcInstallation: 'OWASP-DC',
                     additionalArguments: '--scan .'
                 )
+
+                dependencyCheckPublisher(
+                    pattern: '**/dependency-check-report.xml'
+                )
             }
         }
 
@@ -37,7 +42,16 @@ pipeline {
                 sh 'docker stop blog || true'
                 sh 'docker rm blog || true'
                 sh 'docker run -d -p 3000:3000 --name blog blog:latest'
-                sh 'sleep 5'
+                sh '''
+                    for i in ${seq 1 15}; do
+                        if curl -sf http://127.0.0.1:3000 > /dev/null; then
+                            echo "App is uo and running."
+                            break
+                        fi
+                        echo "Waiting for the app to start..."
+                        sleep 1
+                    done
+                '''
             }
         }
 

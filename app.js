@@ -75,7 +75,7 @@ app.get('/admin', (req, res) => {
   res.render('admin', { title: 'Admin Page', user: req.user });
 });
 
-//app.listen(port, () => {
-//    console.log(`Server is running on http://localhost:${port}`);
-//});
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
 module.exports = app;
